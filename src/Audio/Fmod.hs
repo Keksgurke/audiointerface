@@ -2,19 +2,24 @@
 
 module Audio.Fmod (backendFmod) where
 
-import Foreign ( Ptr, alloca, nullPtr, Storable(peek) )
-import Foreign.C.Types ( CInt(..), CUInt(..) )
-import Control.Monad ( when )
-import Foreign.C.String ( withCString, CString )
-import Audio.Interface ( AudioBackend, AudioBackend(..) )
+import Audio.Interface (AudioBackend (..))
+import Control.Monad (when)
+import Foreign (Ptr, Storable (peek), alloca, nullPtr)
+import Foreign.C.String (CString, withCString)
+import Foreign.C.Types (CInt (..), CUInt (..))
 
 data FMODSystem
+
 data FMODSound
+
 data FMODChannel
 
 type SystemHandle = Ptr FMODSystem
+
 type SoundHandle = Ptr FMODSound
+
 type PlayingHandle = Ptr FMODChannel
+
 type FMOD_RESULT = CInt
 
 version :: CUInt
@@ -65,9 +70,10 @@ stopFmod _ ch = do
   when (result /= 0) $ putStrLn $ "FMOD_Channel_Stop failed: " ++ show result
 
 backendFmod :: AudioBackend SystemHandle SoundHandle PlayingHandle
-backendFmod = AudioBackend {
-    initAudio = initFmod,
-    loadSound = loadFmod,
-    playSound = playFmod,
-    stopSound = stopFmod
-}
+backendFmod =
+  AudioBackend
+    { initAudio = initFmod,
+      loadSound = loadFmod,
+      playSound = playFmod,
+      stopSound = stopFmod
+    }

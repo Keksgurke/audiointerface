@@ -1,15 +1,21 @@
 module Audio.SDL
-  ( backendSDL, playSDL, loadSDL, stopSDL
+  ( backendSDL,
+    playSDL,
+    loadSDL,
+    stopSDL,
   )
 where
 
 import Audio.Interface
-    ( AudioBackend(..) )
+  ( AudioBackend (..),
+  )
 import qualified SDL
 import qualified SDL.Mixer as Mix
 
 type SystemHandle = ()
+
 type SoundHandle = Mix.Chunk
+
 type PlayingHandle = Mix.Channel
 
 initSDL :: IO SystemHandle
@@ -31,9 +37,10 @@ stopSDL _ channel = do
   Mix.halt channel
 
 backendSDL :: AudioBackend SystemHandle SoundHandle PlayingHandle
-backendSDL = AudioBackend {
-    initAudio = initSDL,
-    loadSound = loadSDL,
-    playSound = playSDL,
-    stopSound = stopSDL
-}
+backendSDL =
+  AudioBackend
+    { initAudio = initSDL,
+      loadSound = loadSDL,
+      playSound = playSDL,
+      stopSound = stopSDL
+    }
